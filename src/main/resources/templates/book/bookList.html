@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<title>Insert title here</title>
+</head>
+<body>
+	<section th:insert="shared/header::header"></section>
+	<h2 th:text="${MSG}">Xin chao</h2>
+	<ul id="bookList">
+		<th:block th:each="item : ${list}">
+			<li th:text="${item.id}"></li>
+			<li>
+				<form th:action="@{'book/update/'+${item.id}}" method="POST">
+					<input type="text" name="name" th:value="${item.name}"> <input
+						type="submit" value="Update">
+				</form>
+			</li>
+			<li th:if="${item.author!=null}" th:text="${item.author.name}"></li> 
+			<li><a th:href="@{'book/delete/'+${item.id}}">Delete</a></li>
+			<hr />
+		</th:block>
+	</ul>
+
+	<form th:action="@{book/create}" id="createForm" th:object="${book}" method="POST">
+		<label> Name:
+		<input id="name" type="text" th:field="*{name}">
+			<p style="color: red;" id="nameErr"> </p>
+		</label> <label> Author: <select th:field="*{author.id}" id= "authorId">
+				<th:block th:each="item: ${listAuthor}">
+					<option th:value="${item.id}" th:text="${item.name}">Hoang
+						Loc</option>
+				</th:block>
+		</select>
+		</label> <input id="createSubmit" type="submit">
+	</form>
+
+	<script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+</html>
